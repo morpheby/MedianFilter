@@ -40,11 +40,11 @@
 #include "MedianFilter.h"
 
 
-MedianFilter::MedianFilter(int size, int seed)
+MedianFilter::MedianFilter(int size, uint32_t seed)
 {
    medFilterWin    = constrain(size, 3, 255); // number of samples in sliding median filter window - usually odd #
    medDataPointer  = size >> 1;           // mid point of window
-   data            = (int*)     calloc (size, sizeof(int));     // array for data
+   data            = (uint32_t*)     calloc (size, sizeof(uint32_t));     // array for data
    sizeMap         = (uint8_t*) calloc (size, sizeof(uint8_t)); // array for locations of data in sorted list
    locationMap     = (uint8_t*) calloc (size, sizeof(uint8_t)); // array for locations of history data in map list
    oldestDataPoint = medDataPointer;      // oldest data point location in data array
@@ -66,13 +66,13 @@ MedianFilter::~MedianFilter()
   free(locationMap);
 }
 
-int MedianFilter::in(const int & value)
+uint32_t MedianFilter::in(const uint32_t & value)
 {
    // sort sizeMap
    // small vaues on the left (-)
    // larger values on the right (+)
 
-   boolean dataMoved = false;
+   bool dataMoved = false;
    const uint8_t rightEdge = medFilterWin - 1;  // adjusted for zero indexed array
 
    totalSum += value - data[oldestDataPoint];  // add new value and remove oldest value
@@ -131,42 +131,42 @@ int MedianFilter::in(const int & value)
 }
 
 
-int MedianFilter::out() // return the value of the median data sample
+uint32_t MedianFilter::out() // return the value of the median data sample
 {
    return  data[sizeMap[medDataPointer]];
 }
 
 
-int MedianFilter::getMin()
+uint32_t MedianFilter::getMin()
 {
    return data[sizeMap[ 0 ]];
 }
 
 
-int MedianFilter::getMax()
+uint32_t MedianFilter::getMax()
 {
    return data[sizeMap[ medFilterWin - 1 ]];
 }
 
 
-int MedianFilter::getMean()
+uint32_t MedianFilter::getMean()
 {
    return totalSum / medFilterWin;
 }
 
 
-int MedianFilter::getStDev()  // Arduino run time [us]: filterSize * 2 + 131
+uint32_t MedianFilter::getStDev()  // Arduino run time [us]: filterSize * 2 + 131
 {
    int32_t diffSquareSum = 0;
-   int mean = getMean();
+   uint32_t mean = getMean();
 
    for( int i = 0; i < medFilterWin; i++ )
    {
-      int diff = data[i] - mean;
+      int64_t diff = ((int64_t)data[i]) - mean;
       diffSquareSum += diff * diff;
    }
 
-   return int( sqrtf( float(diffSquareSum) / float(medFilterWin - 1) ) + 0.5f );
+   return uint32_t( sqrtf( double(diffSquareSum) / double(medFilterWin - 1) ) + 0.5 );
 }
 
 
