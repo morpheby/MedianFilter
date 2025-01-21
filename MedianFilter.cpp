@@ -40,11 +40,11 @@
 #include "MedianFilter.h"
 
 
-MedianFilter::MedianFilter(int size, uint32_t seed)
+MedianFilter::MedianFilter(int size, int32_t seed)
 {
    medFilterWin    = constrain(size, 3, 255); // number of samples in sliding median filter window - usually odd #
    medDataPointer  = size >> 1;           // mid point of window
-   data            = (uint32_t*)     calloc (size, sizeof(uint32_t));     // array for data
+   data            = (int32_t*)     calloc (size, sizeof(int32_t));     // array for data
    sizeMap         = (uint8_t*) calloc (size, sizeof(uint8_t)); // array for locations of data in sorted list
    locationMap     = (uint8_t*) calloc (size, sizeof(uint8_t)); // array for locations of history data in map list
    oldestDataPoint = medDataPointer;      // oldest data point location in data array
@@ -66,7 +66,7 @@ MedianFilter::~MedianFilter()
   free(locationMap);
 }
 
-uint32_t MedianFilter::in(const uint32_t & value)
+int32_t MedianFilter::in(const int32_t & value)
 {
    // sort sizeMap
    // small vaues on the left (-)
@@ -131,34 +131,34 @@ uint32_t MedianFilter::in(const uint32_t & value)
 }
 
 
-uint32_t MedianFilter::out() // return the value of the median data sample
+int32_t MedianFilter::out() // return the value of the median data sample
 {
    return  data[sizeMap[medDataPointer]];
 }
 
 
-uint32_t MedianFilter::getMin()
+int32_t MedianFilter::getMin()
 {
    return data[sizeMap[ 0 ]];
 }
 
 
-uint32_t MedianFilter::getMax()
+int32_t MedianFilter::getMax()
 {
    return data[sizeMap[ medFilterWin - 1 ]];
 }
 
 
-uint32_t MedianFilter::getMean()
+int32_t MedianFilter::getMean()
 {
    return totalSum / medFilterWin;
 }
 
 
-uint32_t MedianFilter::getStDev()  // Arduino run time [us]: filterSize * 2 + 131
+int32_t MedianFilter::getStDev()  // Arduino run time [us]: filterSize * 2 + 131
 {
    int32_t diffSquareSum = 0;
-   uint32_t mean = getMean();
+   int32_t mean = getMean();
 
    for( int i = 0; i < medFilterWin; i++ )
    {
@@ -166,7 +166,7 @@ uint32_t MedianFilter::getStDev()  // Arduino run time [us]: filterSize * 2 + 13
       diffSquareSum += diff * diff;
    }
 
-   return uint32_t( sqrtf( double(diffSquareSum) / double(medFilterWin - 1) ) + 0.5 );
+   return int32_t( sqrtf( double(diffSquareSum) / double(medFilterWin - 1) ) + 0.5 );
 }
 
 

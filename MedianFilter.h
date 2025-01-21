@@ -38,15 +38,15 @@
    class MedianFilter
    {
       public:
-         MedianFilter(int size, uint32_t seed);
+         MedianFilter(int size, int32_t seed);
          ~MedianFilter();
-         uint32_t in(const uint32_t & value);
-         uint32_t out();
+         int32_t in(const int32_t & value);
+         int32_t out();
 
-         uint32_t getMin();
-         uint32_t getMax();
-         uint32_t getMean();
-         uint32_t getStDev();
+         int32_t getMin();
+         int32_t getMax();
+         int32_t getMean();
+         int32_t getStDev();
 
          /*
          void printData();		// used for debugging
@@ -58,7 +58,7 @@
       private:
          uint8_t medFilterWin;      // number of samples in sliding median filter window - usually odd #
          uint8_t medDataPointer;	   // mid point of window
-         uint32_t * data;			   // array pointer for data sorted by age in ring buffer
+         int32_t * data;			   // array pointer for data sorted by age in ring buffer
          uint8_t  * sizeMap;			// array pointer for locations data in sorted by size
          uint8_t  * locationMap;		// array pointer for data locations in history map
          uint8_t oldestDataPoint;	// oldest data point location in ring buffer
