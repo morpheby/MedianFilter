@@ -39,6 +39,8 @@
    {
       public:
          MedianFilter(int size, int32_t seed);
+         MedianFilter(const MedianFilter &other);
+         MedianFilter(MedianFilter &&other);
          ~MedianFilter();
          int32_t in(const int32_t & value);
          int32_t out();
@@ -47,6 +49,9 @@
          int32_t getMax();
          int32_t getMean();
          int32_t getStDev();
+
+         MedianFilter& operator=(const MedianFilter&);
+         MedianFilter& operator=(MedianFilter&&);
 
          /*
          void printData();		// used for debugging

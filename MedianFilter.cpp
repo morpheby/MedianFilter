@@ -43,7 +43,7 @@
 MedianFilter::MedianFilter(int size, int32_t seed)
 {
    medFilterWin    = constrain(size, 3, 255); // number of samples in sliding median filter window - usually odd #
-   medDataPointer  = size >> 1;           // mid point of window
+   medDataPointer  = medFilterWin >> 1;           // mid point of window
    data            = (int32_t*) calloc (medFilterWin, sizeof(int32_t)); // array for data
    sizeMap         = (uint8_t*) calloc (medFilterWin, sizeof(uint8_t)); // array for locations of data in sorted list
    locationMap     = (uint8_t*) calloc (medFilterWin, sizeof(uint8_t)); // array for locations of history data in map list
@@ -56,6 +56,64 @@ MedianFilter::MedianFilter(int size, int32_t seed)
       locationMap[i] = i;      // start map with straight run
       data[i]        = seed;   // populate with seed value
    }
+}
+
+MedianFilter::MedianFilter(const MedianFilter &other) :
+   medFilterWin { other.medFilterWin },
+   medDataPointer { other.medDataPointer },
+   oldestDataPoint { other.oldestDataPoint },
+   totalSum { other.totalSum } {
+   data            = (int32_t*) calloc (medFilterWin, sizeof(int32_t)); // array for data
+   sizeMap         = (uint8_t*) calloc (medFilterWin, sizeof(uint8_t)); // array for locations of data in sorted list
+   locationMap     = (uint8_t*) calloc (medFilterWin, sizeof(uint8_t)); // array for locations of history data in map list
+   memcpy(data, other.data, medFilterWin * sizeof(int32_t));
+   memcpy(sizeMap, other.data, medFilterWin * sizeof(uint8_t));
+   memcpy(locationMap, other.data, medFilterWin * sizeof(uint8_t));
+}
+
+MedianFilter& MedianFilter::operator=(const MedianFilter& other) {
+   medFilterWin = other.medFilterWin;
+   medDataPointer = other.medDataPointer;
+   oldestDataPoint = other.oldestDataPoint;
+   totalSum = other.totalSum;
+   free(data);
+   free(sizeMap);
+   free(locationMap);
+   data            = (int32_t*) calloc (medFilterWin, sizeof(int32_t)); // array for data
+   sizeMap         = (uint8_t*) calloc (medFilterWin, sizeof(uint8_t)); // array for locations of data in sorted list
+   locationMap     = (uint8_t*) calloc (medFilterWin, sizeof(uint8_t)); // array for locations of history data in map list
+   memcpy(data, other.data, medFilterWin * sizeof(int32_t));
+   memcpy(sizeMap, other.data, medFilterWin * sizeof(uint8_t));
+   memcpy(locationMap, other.data, medFilterWin * sizeof(uint8_t));
+
+   return *this;
+}
+
+MedianFilter::MedianFilter(MedianFilter &&other) :
+   medFilterWin { other.medFilterWin },
+   medDataPointer { other.medDataPointer },
+   data { other.data },
+   sizeMap { other.sizeMap },
+   locationMap { other.locationMap },
+   oldestDataPoint { other.oldestDataPoint },
+   totalSum { other.totalSum } {
+   other.data = nullptr;
+   other.sizeMap = nullptr;
+   other.locationMap = nullptr;
+}
+
+MedianFilter& MedianFilter::operator=(MedianFilter&& other) {
+   medFilterWin = other.medFilterWin;
+   medDataPointer = other.medDataPointer;
+   oldestDataPoint = other.oldestDataPoint;
+   totalSum = other.totalSum;
+   data = other.data;
+   sizeMap = other.sizeMap;
+   locationMap = other.locationMap;
+   other.data = nullptr;
+   other.sizeMap = nullptr;
+   other.locationMap = nullptr;
+   return *this;
 }
 
 MedianFilter::~MedianFilter()
