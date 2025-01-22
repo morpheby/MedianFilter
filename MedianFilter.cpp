@@ -44,11 +44,11 @@ MedianFilter::MedianFilter(int size, int32_t seed)
 {
    medFilterWin    = constrain(size, 3, 255); // number of samples in sliding median filter window - usually odd #
    medDataPointer  = size >> 1;           // mid point of window
-   data            = (int32_t*)     calloc (size, sizeof(int32_t));     // array for data
-   sizeMap         = (uint8_t*) calloc (size, sizeof(uint8_t)); // array for locations of data in sorted list
-   locationMap     = (uint8_t*) calloc (size, sizeof(uint8_t)); // array for locations of history data in map list
+   data            = (int32_t*) calloc (medFilterWin, sizeof(int32_t)); // array for data
+   sizeMap         = (uint8_t*) calloc (medFilterWin, sizeof(uint8_t)); // array for locations of data in sorted list
+   locationMap     = (uint8_t*) calloc (medFilterWin, sizeof(uint8_t)); // array for locations of history data in map list
    oldestDataPoint = medDataPointer;      // oldest data point location in data array
-   totalSum        = size * seed;         // total of all values
+   totalSum        = medFilterWin * seed;         // total of all values
 
    for(uint8_t i = 0; i < medFilterWin; i++) // initialize the arrays
    {
