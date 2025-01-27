@@ -67,8 +67,8 @@ MedianFilter::MedianFilter(const MedianFilter &other) :
    sizeMap         = (uint8_t*) calloc (medFilterWin, sizeof(uint8_t)); // array for locations of data in sorted list
    locationMap     = (uint8_t*) calloc (medFilterWin, sizeof(uint8_t)); // array for locations of history data in map list
    memcpy(data, other.data, medFilterWin * sizeof(int32_t));
-   memcpy(sizeMap, other.data, medFilterWin * sizeof(uint8_t));
-   memcpy(locationMap, other.data, medFilterWin * sizeof(uint8_t));
+   memcpy(sizeMap, other.sizeMap, medFilterWin * sizeof(uint8_t));
+   memcpy(locationMap, other.locationMap, medFilterWin * sizeof(uint8_t));
 }
 
 MedianFilter& MedianFilter::operator=(const MedianFilter& other) {
@@ -83,8 +83,8 @@ MedianFilter& MedianFilter::operator=(const MedianFilter& other) {
    sizeMap         = (uint8_t*) calloc (medFilterWin, sizeof(uint8_t)); // array for locations of data in sorted list
    locationMap     = (uint8_t*) calloc (medFilterWin, sizeof(uint8_t)); // array for locations of history data in map list
    memcpy(data, other.data, medFilterWin * sizeof(int32_t));
-   memcpy(sizeMap, other.data, medFilterWin * sizeof(uint8_t));
-   memcpy(locationMap, other.data, medFilterWin * sizeof(uint8_t));
+   memcpy(sizeMap, other.sizeMap, medFilterWin * sizeof(uint8_t));
+   memcpy(locationMap, other.locationMap, medFilterWin * sizeof(uint8_t));
 
    return *this;
 }
