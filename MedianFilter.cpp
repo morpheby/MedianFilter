@@ -107,6 +107,9 @@ MedianFilter& MedianFilter::operator=(MedianFilter&& other) {
    medDataPointer = other.medDataPointer;
    oldestDataPoint = other.oldestDataPoint;
    totalSum = other.totalSum;
+   free(data);
+   free(sizeMap);
+   free(locationMap);
    data = other.data;
    sizeMap = other.sizeMap;
    locationMap = other.locationMap;
