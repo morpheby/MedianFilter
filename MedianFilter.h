@@ -35,23 +35,24 @@
 
    #include "Arduino.h"
 
+   template <typename T, typename Sum>
    class MedianFilter
    {
       public:
-         MedianFilter(int size, int32_t seed);
-         MedianFilter(const MedianFilter &other);
-         MedianFilter(MedianFilter &&other);
+         MedianFilter(int size, T seed);
+         MedianFilter(const MedianFilter<T, Sum> &other);
+         MedianFilter(MedianFilter<T, Sum> &&other);
          ~MedianFilter();
-         int32_t in(const int32_t & value);
-         int32_t out();
+         T in(const T & value);
+         T out();
 
-         int32_t getMin();
-         int32_t getMax();
-         int32_t getMean();
-         int32_t getStDev();
+         T getMin();
+         T getMax();
+         Sum getMean();
+         Sum getStdDev();
 
-         MedianFilter& operator=(const MedianFilter&);
-         MedianFilter& operator=(MedianFilter&&);
+         MedianFilter<T, Sum>& operator=(const MedianFilter<T, Sum>&);
+         MedianFilter<T, Sum>& operator=(MedianFilter<T, Sum>&&);
 
          /*
          void printData();		// used for debugging
@@ -63,11 +64,13 @@
       private:
          uint8_t medFilterWin;      // number of samples in sliding median filter window - usually odd #
          uint8_t medDataPointer;	   // mid point of window
-         int32_t * data;			   // array pointer for data sorted by age in ring buffer
+         T * data;			   // array pointer for data sorted by age in ring buffer
          uint8_t  * sizeMap;			// array pointer for locations data in sorted by size
          uint8_t  * locationMap;		// array pointer for data locations in history map
          uint8_t oldestDataPoint;	// oldest data point location in ring buffer
-         int32_t totalSum;
+         Sum totalSum;
    };
+
+#include "MedianFilter.hpp"
 
 #endif
