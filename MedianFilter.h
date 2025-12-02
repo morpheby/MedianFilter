@@ -44,12 +44,12 @@
          MedianFilter(MedianFilter<T, Sum> &&other);
          ~MedianFilter();
          T in(const T & value);
-         T out();
+         T out() const;
 
-         T getMin();
-         T getMax();
-         Sum getMean();
-         Sum getStdDev();
+         T getMin() const;
+         T getMax() const;
+         Sum getMean() const;
+         Sum getStdDev() const;
 
          MedianFilter<T, Sum>& operator=(const MedianFilter<T, Sum>&);
          MedianFilter<T, Sum>& operator=(MedianFilter<T, Sum>&&);

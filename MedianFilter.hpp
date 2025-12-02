@@ -198,31 +198,31 @@ T MedianFilter<T, Sum>::in(const T & value)
 }
 
 template <typename T, typename Sum>
-T MedianFilter<T, Sum>::out() // return the value of the median data sample
+T MedianFilter<T, Sum>::out() const // return the value of the median data sample
 {
    return  data[sizeMap[medDataPointer]];
 }
 
 template <typename T, typename Sum>
-T MedianFilter<T, Sum>::getMin()
+T MedianFilter<T, Sum>::getMin() const
 {
    return data[sizeMap[ 0 ]];
 }
 
 template <typename T, typename Sum>
-T MedianFilter<T, Sum>::getMax()
+T MedianFilter<T, Sum>::getMax() const
 {
    return data[sizeMap[ medFilterWin - 1 ]];
 }
 
 template <typename T, typename Sum>
-Sum MedianFilter<T, Sum>::getMean()
+Sum MedianFilter<T, Sum>::getMean() const
 {
    return totalSum / medFilterWin;
 }
 
 template <typename T, typename Sum>
-Sum MedianFilter<T, Sum>::getStdDev()  // Arduino run time [us]: filterSize * 2 + 131
+Sum MedianFilter<T, Sum>::getStdDev() const // Arduino run time [us]: filterSize * 2 + 131
 {
    Sum diffSquareSum = 0;
    Sum mean = getMean();
