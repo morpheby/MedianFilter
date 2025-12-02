@@ -51,6 +51,8 @@
          Sum getMean() const;
          Sum getStdDev() const;
 
+         void reset(T seed);
+
          MedianFilter<T, Sum>& operator=(const MedianFilter<T, Sum>&);
          MedianFilter<T, Sum>& operator=(MedianFilter<T, Sum>&&);
 

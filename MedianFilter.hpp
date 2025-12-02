@@ -236,6 +236,20 @@ Sum MedianFilter<T, Sum>::getStdDev() const // Arduino run time [us]: filterSize
    return Sum( sqrt( ((double)(diffSquareSum / (medFilterWin - 1.0))) + 0.5 ) );
 }
 
+template <typename T, typename Sum>
+void MedianFilter<T, Sum>::reset(T seed)
+{
+   oldestDataPoint = medDataPointer;      // oldest data point location in data array
+   totalSum        = medFilterWin * ((Sum) seed);         // total of all values
+
+   for(uint8_t i = 0; i < medFilterWin; i++) // initialize the arrays
+   {
+      sizeMap[i]     = i;      // start map with straight run
+      locationMap[i] = i;      // start map with straight run
+      data[i]        = seed;   // populate with seed value
+   }
+}
+
 
 // *** debug fuctions ***
 /*
