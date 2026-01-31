@@ -71,6 +71,8 @@
          uint8_t  * locationMap;		// array pointer for data locations in history map
          uint8_t oldestDataPoint;	// oldest data point location in ring buffer
          Sum totalSum;
+
+         bool is_valid_value(T v);
    };
 
 #include "MedianFilter.hpp"

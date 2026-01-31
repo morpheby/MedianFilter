@@ -133,6 +133,36 @@ MedianFilter<T, Sum>::~MedianFilter()
 }
 
 template <typename T, typename Sum>
+bool MedianFilter<T, Sum>::is_valid_value(T v)
+{
+   return true;
+}
+
+template <>
+bool MedianFilter<float, double>::is_valid_value(float v)
+{
+   return !isnan(v);
+}
+
+template <>
+bool MedianFilter<double, double>::is_valid_value(double v)
+{
+   return !isnan(v);
+}
+
+template <>
+bool MedianFilter<float, float>::is_valid_value(float v)
+{
+   return !isnan(v);
+}
+
+template <>
+bool MedianFilter<double, float>::is_valid_value(double v)
+{
+   return !isnan(v);
+}
+
+template <typename T, typename Sum>
 T MedianFilter<T, Sum>::in(const T & value)
 {
    // sort sizeMap
@@ -142,7 +172,9 @@ T MedianFilter<T, Sum>::in(const T & value)
    bool dataMoved = false;
    const uint8_t rightEdge = medFilterWin - 1;  // adjusted for zero indexed array
 
-   totalSum += ((Sum) value) - data[oldestDataPoint];  // add new value and remove oldest value
+   if (is_valid_value(value)) {
+      totalSum += ((Sum) value) - data[oldestDataPoint];  // add new value and remove oldest value
+   }
 
    data[oldestDataPoint] = value;  // store new data in location of oldest data in ring buffer
 
