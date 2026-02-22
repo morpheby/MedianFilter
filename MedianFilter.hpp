@@ -39,6 +39,8 @@
 
 #include "MedianFilter.h"
 
+#include <cmath>
+
 template <typename T, typename Sum>
 MedianFilter<T, Sum>::MedianFilter(int size, T seed)
 {
@@ -141,25 +143,25 @@ bool MedianFilter<T, Sum>::is_valid_value(T v)
 template <>
 bool MedianFilter<float, double>::is_valid_value(float v)
 {
-   return !isnan(v);
+   return !std::isnan(v);
 }
 
 template <>
 bool MedianFilter<double, double>::is_valid_value(double v)
 {
-   return !isnan(v);
+   return !std::isnan(v);
 }
 
 template <>
 bool MedianFilter<float, float>::is_valid_value(float v)
 {
-   return !isnan(v);
+   return !std::isnan(v);
 }
 
 template <>
 bool MedianFilter<double, float>::is_valid_value(double v)
 {
-   return !isnan(v);
+   return !std::isnan(v);
 }
 
 template <typename T, typename Sum>
@@ -265,7 +267,7 @@ Sum MedianFilter<T, Sum>::getStdDev() const // Arduino run time [us]: filterSize
       diffSquareSum += diff * diff;
    }
 
-   return Sum( sqrt( ((double)(diffSquareSum / (medFilterWin - 1.0))) + 0.5 ) );
+   return Sum( std::sqrt( ((double)(diffSquareSum / (medFilterWin - 1.0))) + 0.5 ) );
 }
 
 template <typename T, typename Sum>
