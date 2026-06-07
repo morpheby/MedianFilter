@@ -39,7 +39,7 @@
    class MedianFilter
    {
       public:
-         MedianFilter(int size, T seed);
+         MedianFilter(uint8_t size, T seed);
          MedianFilter(const MedianFilter<T, Sum> &other);
          MedianFilter(MedianFilter<T, Sum> &&other);
          ~MedianFilter();
@@ -55,6 +55,10 @@
 
          MedianFilter<T, Sum>& operator=(const MedianFilter<T, Sum>&);
          MedianFilter<T, Sum>& operator=(MedianFilter<T, Sum>&&);
+
+         uint8_t windowSize() const {
+             return medFilterWin;
+         }
 
          /*
          void printData();		// used for debugging

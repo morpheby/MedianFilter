@@ -42,7 +42,7 @@
 #include <cmath>
 
 template <typename T, typename Sum>
-MedianFilter<T, Sum>::MedianFilter(int size, T seed)
+MedianFilter<T, Sum>::MedianFilter(uint8_t size, T seed)
 {
    medFilterWin    = constrain(size, 3, 255); // number of samples in sliding median filter window - usually odd #
    medDataPointer  = medFilterWin >> 1;           // mid point of window
@@ -138,30 +138,6 @@ template <typename T, typename Sum>
 bool MedianFilter<T, Sum>::is_valid_value(T v)
 {
    return true;
-}
-
-template <>
-bool MedianFilter<float, double>::is_valid_value(float v)
-{
-   return !std::isnan(v);
-}
-
-template <>
-bool MedianFilter<double, double>::is_valid_value(double v)
-{
-   return !std::isnan(v);
-}
-
-template <>
-bool MedianFilter<float, float>::is_valid_value(float v)
-{
-   return !std::isnan(v);
-}
-
-template <>
-bool MedianFilter<double, float>::is_valid_value(double v)
-{
-   return !std::isnan(v);
 }
 
 template <typename T, typename Sum>
